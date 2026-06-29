@@ -129,20 +129,6 @@ async function run() {
         });
 
 
-        app.get('/admin/stats', async (req, res) => {
-                const totalUsers = await userCollection.estimatedDocumentCount();
-                const totalRequests = await donationRequestsCollection.estimatedDocumentCount();
-                const fundingData = await fundingCollection.aggregate([
-                    { $group: { _id: null, total: { $sum: "$amount" } } }
-                ]).toArray();
-                const totalFunding = fundingData[0]?.total || 450;
-
-                res.send({
-                    totalUsers,
-                    totalRequests,
-                    totalFunding
-                });
-        });
 
         app.post('/requests', async (req, res) => {
             const newRequest = req.body;
